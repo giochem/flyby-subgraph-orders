@@ -1,0 +1,34 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key"])
+
+extend type Query {
+  order(id: ID!): [Order]
+  orders: [Order]
+}
+extend type Mutation {
+  createOrder(order: OrderInput!): OrderResponse!
+  updateOrder(id: ID!, order: OrderInput!): OrderResponse!
+  deleteOrder(id: ID!): OrderResponse!
+}
+
+type Order @key(fields: "id") {
+  id: ID!
+  account: Account
+  tour: Tour
+}
+type Account @key(fields: "id") {
+  id: ID!
+}
+type Tour @key(fields: "id") {
+  id: ID!
+}
+
+input OrderInput {
+  tourId: ID!
+}
+
+type OrderResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  order: Order
+}
